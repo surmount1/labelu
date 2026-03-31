@@ -12,9 +12,9 @@ import json
 from typing import List
 from alembic import op, context
 import sqlalchemy as sa
+from sqlalchemy import text, select
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.automap import automap_base
-from sqlalchemy import select
 from labelu.internal.common.config import settings
 
 from labelu.internal.domain.models.pre_annotation import TaskPreAnnotation
@@ -78,7 +78,7 @@ def upgrade() -> None:
                 
             # create task_pre_annotation
             exist_task_pre_annotations = session.execute(
-                select([Base.classes.task_pre_annotation])
+                select(Base.classes.task_pre_annotation)
             ).scalars().all()
             
             for task_pre_annotation in exist_task_pre_annotations:

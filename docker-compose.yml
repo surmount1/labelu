@@ -1,0 +1,10 @@
+services:
+  labelu:
+    image: harbor.ruijie.com.cn/ai/labelu:latest 
+    ports:
+      - "8000:8000"
+    volumes:
+      - ${LABELU_DATA_DIR:-./.labelu-data}:/data
+    env_file:
+      - .env
+    restart: unless-stopped

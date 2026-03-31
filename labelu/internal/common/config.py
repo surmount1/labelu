@@ -13,6 +13,7 @@ class Settings(BaseSettings):
         env_prefix="",
         env_file_encoding="utf-8",
         case_sensitive=True,
+        env_file=".env",
     )
 
     SCHEME: str = "http"
@@ -31,13 +32,13 @@ class Settings(BaseSettings):
     DATABASE_URL: str = Field(
         # default="mysql://labelu:labelupass@localhost/labeludb",
         default=f"sqlite:///{BASE_DATA_DIR}/labelu.sqlite",
-        description="Database connection URL. Supports SQLite and MySQL."
+        description="Database connection URL. Supports SQLite and MySQL.",
     )
     # or using MySQL DATABASE_URL=mysql://labelu:labelupass@localhost/labeludb
 
     PASSWORD_SECRET_KEY: str = Field(
         default="",
-        description="JWT secret key. Generate with: openssl rand -hex 32. MUST be set in production."
+        description="JWT secret key. Generate with: openssl rand -hex 32. MUST be set in production.",
     )
 
     TOKEN_GENERATE_ALGORITHM: str = "HS256"
@@ -48,11 +49,7 @@ class Settings(BaseSettings):
     @property
     def need_migration_to_mysql(self) -> bool:
         sqlite_path = Path(self.BASE_DATA_DIR) / "labelu.sqlite"
-        return (
-            self.DATABASE_URL.startswith('mysql') and 
-            sqlite_path.exists()
-        )
-
+        return self.DATABASE_URL.startswith("mysql") and sqlite_path.exists()
 
 
 settings = Settings()
